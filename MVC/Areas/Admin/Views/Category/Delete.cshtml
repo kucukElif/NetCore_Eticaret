@@ -1,0 +1,20 @@
+﻿@model Category
+@{
+    ViewData["Title"] = "Kategori Silme";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card">
+  
+    <div class="card-body">
+        <form asp-action="Delete" asp-controller="Category" method="post">
+            <p>
+                @Model.CategoryName isimli kategoriyi silmek istediğinizden emin misiniz?
+            </p>
+            <button class="btn btn-danger">Evet</button>
+            <a asp-action="Index" asp-controller="Category" class="btn">İptal</a>
+        </form>
+        
+    </div>
+</div>
+

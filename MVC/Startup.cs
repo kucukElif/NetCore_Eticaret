@@ -10,6 +10,9 @@ using Microsoft.Extensions.Hosting;
 using DAL.Context;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using BLL.Abstract;
+using BLL.Repository;
+using DAL.Entity;
 
 namespace MVC
 {
@@ -27,6 +30,11 @@ namespace MVC
         {
             services.AddDbContext<AppDbContext>(options=>options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),b=>b.MigrationsAssembly("MVC")));
             services.AddMvc(x=>x.EnableEndpointRouting=false);
+            //Scoped
+            services.AddScoped<ICategoryService, CategoryRepository>();
+            services.AddScoped<IProductService, ProductRepository>();
+            //Identity
+            services.AddIdentity<AppUser, AppUserRole>().AddEntityFrameworkStores<AppDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,11 +56,16 @@ namespace MVC
             //});
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseStaticFiles();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                name: "default",
-                template: "{area=Member}/{controller=Home}/{action=Index}/{id?}"); 
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}"
+                    );
+                routes.MapRoute(
+                name: "areas",
+                template: "{area=exists}/{controller=Home}/{action=Index}/{id?}"); 
         
         });
 

@@ -14,7 +14,7 @@ namespace DAL.Entity
         public decimal UnitPrice { get; set; }
         public short Quantity { get; set; }
         public string ImagePath { get; set; }
-
+        public Guid CategoryId { get; set; }
         public virtual Category Category { get; set; }
         public virtual List<OrderDetail> OrderDetails { get; set; }
     }

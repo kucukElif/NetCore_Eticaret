@@ -1,0 +1,55 @@
+﻿@model ProductVM
+@{
+    ViewData["Title"] = "Ürün Listesi";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="card">
+    <div class="card-header">
+        <a asp-action="Create" asp-controller="Product" class="btn btn-success float-right">Ürün Ekle</a>
+    </div>
+    <div class="card-body">
+        <table id="producttable" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Ürün Görsel</th>
+                    <th>Ürün Adı</th>
+                    <th>Kategori</th>
+                    <th>Birim Fiyat</th>
+                    <th>Adet</th>
+                    <th></th>
+                </tr>
+            </thead>
+            @foreach (var p in Model.Products)
+            {
+                <tbody>
+                    <tr>
+                        <td><img src="~/images/@p.ImagePath" style="width:50px; height:50px"/></td>
+                        <td>@p.ProductName<td>
+                        <td>@Model.Categories.Where(x=>x.ID==p.CategoryId).FirstOrDefault().CategoryName</td>
+                        <td>@p.UnitPrice</td>
+                        <td>@p.Quantity</td>
+                        <td>
+                            <a asp-action="Edit" asp-controller="Product" asp-route-id="@p.ID" class="btn btn-sm btn-warning">Düzenle</a>
+                            <a asp-action="Delete" asp-controller="Product" asp-route-id="@p.ID" class=" btn btn-sm btn-danger">Sil</a>
+                        </td>
+                    </tr>
+                </tbody>
+            }
+
+        </table>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+    <script>
+    $(document).ready(function () {
+
+        $('#producttable').DataTable();
+    });
+    </script>
+}

@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Category>
+@{
+    ViewData["Title"] = "Kategori Listesi";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="card">
+    <div class="card-header">
+        <a asp-action="Create" asp-controller="Category" class="btn btn-success float-right">Kategori Ekle</a>
+    </div>
+    <div class="card-body">
+        <table id="categorytable" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Kategori Adı</th>
+                    <th>Açıklama</th>
+                    <th></th>
+                </tr>
+            </thead>
+            @foreach (var category in Model)
+            {
+                <tbody>
+                    <tr>
+                        <td>@category.CategoryName</td>
+                        <td>@category.Description</td>
+                        <td>
+                            <a asp-action="Edit" asp-controller="Category" asp-route-id="@category.ID" class="btn btn-sm btn-warning">Düzenle</a>
+                            <a asp-action="Delete" asp-controller="Category" asp-route-id="@category.ID" class=" btn btn-sm btn-danger">Sil</a>
+                        </td>
+                    </tr>
+                </tbody>
+            }
+
+        </table>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+    <script>
+    $(document).ready(function () {
+
+        $('#categorytable').DataTable();
+    });
+    </script>
+}
