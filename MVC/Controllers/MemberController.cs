@@ -12,10 +12,12 @@ namespace MVC.Controllers
     public class MemberController : Controller
     {
         private readonly UserManager<AppUser> userManager;
+        private readonly SignInManager<AppUser> signInManager;
 
-        public MemberController(UserManager<AppUser> userManager)
+        public MemberController(UserManager<AppUser> userManager , SignInManager<AppUser> signInManager)
         {
             this.userManager = userManager;
+            this.signInManager = signInManager;
         }
         public IActionResult Create()
         {
@@ -40,6 +42,32 @@ namespace MVC.Controllers
                 {
                     return RedirectToAction("Index","Home");
 
+                }
+            }
+            return View();
+        }
+        
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(AppUserLoginVM loginVM)
+        {
+            if (ModelState.IsValid)
+            {
+                AppUser user = await userManager.FindByNameAsync(loginVM.UserName);
+                if (user!=null)
+                {
+                    await signInManager.SignOutAsync();
+                    var result = await signInManager.PasswordSignInAsync(user, loginVM.Password, loginVM.RememberMe, false);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+
+                    }
                 }
             }
             return View();
