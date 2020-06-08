@@ -35,6 +35,9 @@ namespace MVC
             services.AddScoped<IProductService, ProductRepository>();
             //Identity
             services.AddIdentity<AppUser, AppUserRole>().AddEntityFrameworkStores<AppDbContext>();
+            //Session
+
+            services.AddSession(x => { x.Cookie.Name = "Cart.Session"; x.IdleTimeout = TimeSpan.FromMinutes(5); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +47,9 @@ namespace MVC
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseSession();
             app.UseRouting();
 
             //app.UseEndpoints(endpoints =>

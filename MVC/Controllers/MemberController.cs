@@ -72,5 +72,11 @@ namespace MVC.Controllers
             }
             return View();
         }
+
+        public async Task<IActionResult> LogOut()
+        {
+            signInManager.SignOutAsync();
+            return Redirect("/Home/Index");
+        }
     }
 }

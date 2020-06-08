@@ -1,4 +1,6 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> signInManager
+@inject UserManager<AppUser> userManager
 @{
     Layout = null;
 }
@@ -32,13 +34,14 @@
     <!-- custom javascript -->
     <script src="~/theme/js/script.js" type="text/javascript"></script>
 
-    <script type="text/javascript">/// some script
+    <script type="text/javascript">
+    /// some script
 
-// jquery ready start
-$(document).ready(function() {
-	// jQuery code
+        // jquery ready start
+        $(document).ready(function () {
+            // jQuery code
 
-});
+        });
 // jquery end</script>
 
 </head>
@@ -95,13 +98,26 @@ $(document).ready(function() {
                                 <span class="badge badge-pill badge-danger notify">0</span>
                             </div>
                             <div class="widget-header icontext">
-                                <a href="~/theme/#" class="icon icon-sm rounded-circle border"><i class="fa fa-user"></i></a>
                                 <div class="text">
-                                    <span class="text-muted">Welcome!</span>
-                                    <div>
-                                        <a asp-action="Login" asp-controller="Member">Giriş Yap</a> |
-                                        <a asp-action="Create" asp-controller="Member"> Kayıt Ol</a>
-                                    </div>
+
+                                    @if (signInManager.IsSignedIn(User))
+                                    {
+                                        <a asp-action="Profile" asp-controller="Account" asp-area="Member" asp-route-id="@User.Identity.Name" class="icon icon-sm rounded-circle border"><i class="fa fa-user"></i></a>
+
+                                        <br />
+                                        <span class="text-muted">Merhaba! @User.Identity.Name</span> 
+                                        <a asp-action="LogOut" asp-controller="Member" style="color:blue">/Çıkış Yap</a>
+
+                                    }
+                                    else
+                                    {
+                                        <div>
+                                            <a asp-action="Login" asp-controller="Member">Giriş Yap</a> |
+                                            <a asp-action="Create" asp-controller="Member" style="color:blue"> Kayıt Ol</a>
+                                        </div>
+
+                                    }
+
                                 </div>
                             </div>
                         </div> <!-- widgets-wrap.// -->
@@ -157,7 +173,7 @@ $(document).ready(function() {
         </div> <!-- container .// -->
     </nav>
 
-    
+
     @RenderBody()
     <!-- ========================= FOOTER ========================= -->
     <footer class="section-footer border-top bg">
