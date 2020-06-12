@@ -33,11 +33,25 @@ namespace MVC
             //Scoped
             services.AddScoped<ICategoryService, CategoryRepository>();
             services.AddScoped<IProductService, ProductRepository>();
+            services.AddScoped<IOrderService, OrderRepository>();
             //Identity
             services.AddIdentity<AppUser, AppUserRole>().AddEntityFrameworkStores<AppDbContext>();
             //Session
 
             services.AddSession(x => { x.Cookie.Name = "Cart.Session"; x.IdleTimeout = TimeSpan.FromMinutes(5); });
+            //Cookie
+            services.ConfigureApplicationCookie(x => {
+                x.LoginPath = new PathString("/Member/Login");
+                x.AccessDeniedPath = new PathString("/Member/Login");
+                x.Cookie = new CookieBuilder
+                {
+                    Name = "LoginCookie",
+                    Expiration = null
+                };
+                x.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+            });
+          
+        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,13 +79,14 @@ namespace MVC
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                name: "areas",
+                template: "{area=exists}/{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}"
                     );
-                routes.MapRoute(
-                name: "areas",
-                template: "{area=exists}/{controller=Home}/{action=Index}/{id?}"); 
-        
+                
         });
 
         }

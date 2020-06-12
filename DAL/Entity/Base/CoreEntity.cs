@@ -6,6 +6,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.IO.Pipes;
 using System.Text;
 using System.Security.Principal;
+using System.Net;
+
 namespace DAL.Entity.Base
 {
     public class CoreEntity : IEntity<Guid>
@@ -17,7 +19,7 @@ namespace DAL.Entity.Base
             this.CreatedAdUserName = WindowsIdentity.GetCurrent().Name;
             this.CreatedComputerName = Environment.MachineName;
             //Todo: Ip alma işlemi gerçekleştirelecek.
-            this.CreatedIP = "192.161.1.1";
+            this.CreatedIP = GetHostName();
             this.CreatedBy = "admin";
         }
         [Key]
@@ -36,5 +38,20 @@ namespace DAL.Entity.Base
         public string ModifiedIP { get; set; }
         public string ModifiedAdUserName { get; set; }
         public string ModifiedBy { get; set; }
+
+        //Ip'e ulaşmak için tanımlandı
+        public static string GetHostName() {
+            string ip = null;
+            IPAddress[] localIps = Dns.GetHostAddresses(Dns.GetHostName());
+            foreach (var item in localIps)
+            {
+                if (item.AddressFamily==System.Net.Sockets.AddressFamily.InterNetwork)
+                {
+                    ip=item.ToString();
+
+                }
+            }
+            return ip;
+        }
     }
 }

@@ -1,0 +1,79 @@
+﻿@model OrderVM
+@inject Microsoft.AspNetCore.Identity.UserManager<AppUser> userManager
+@{
+    ViewData["Title"] = "Sipariş Listesi";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+  
+}
+
+
+<div class="card">
+    <div class="card-header">
+        @*<a asp-action="Create" asp-controller="Order" class="btn btn-success float-right">Kategori Ekle</a>*@
+    </div>
+    <div class="card-body">
+        <table id="categorytable" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Sipariş ID</th>
+                    <th>Kullanıcı Adı</th>
+                    <th>Sipariş Tarihi</th>
+                    <th>Durum</th>
+                    <th>Fiyat</th>
+                    <th></th>
+                </tr>
+            </thead>
+            @foreach (var o in Model.Orders)
+            {
+                <tbody>
+                    <tr>
+                        <td>@o.ID</td>
+                        <td>@userManager.FindByIdAsync(o.AppUserId.ToString()).Result.UserName</td>
+                        <td>@o.CreatedDate</td>
+                        <td>
+                        @switch (o.Confirmed)
+                                {
+                                    case false:
+                                <span class="warning">Onay Bekliyor</span>
+                                        break;
+                                    case true:
+                                <span class="success">Onaylandı</span>
+                                        break;
+                        }</td>
+
+
+                                <td>
+                                   @foreach (var item in Model.OrderDetails)
+                                   {
+                                     @if (item.OrderId==o.ID)
+                                     {
+                                         <span>@item.GetTotalPrice()</span>
+
+                                     }
+                                   }
+
+                                 </td>
+                      
+
+                                <td>
+                                    @if (o.Confirmed == true)
+                                    {
+                                        <a asp-action="Confirm" asp-controller="Order" asp-route-id="@o.ID" class="btn btn-sm btn-warning">Onayla</a>
+
+
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="Cancel" asp-controller="Order" asp-route-id="@o.ID" class=" btn btn-sm btn-danger">İptal Et</a>
+
+                                    }
+                                </td>
+                    </tr>
+                </tbody>
+            }
+
+        </table>
+    </div>
+</div>
+
+

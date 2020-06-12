@@ -35,12 +35,28 @@ namespace BLL.Repository
 
         public Order GetById(Guid id)
         {
-            return context.Orders.FirstOrDefault(x => x.ID == id);
+            return context.Orders.Find(id);
+        }
+
+        public OrderDetail GetByIdOrderDetail(Guid id)
+        {
+            return context.OrderDetails.Find(id);
         }
 
         public List<Order> GetDefault(Expression<Func<Order, bool>> exp)
         {
             return context.Orders.Where(exp).ToList();
+        }
+
+        public List<OrderDetail> GetOrderDetail()
+        {
+            return context.OrderDetails.ToList()
+        }
+
+        public List<Order> GetOrders()
+        {
+           return context.Orders.ToList();
+            context.SaveChanges();
         }
 
         public void Remove(Guid id)

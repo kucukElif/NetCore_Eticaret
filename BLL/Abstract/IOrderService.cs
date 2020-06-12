@@ -9,5 +9,8 @@ namespace BLL.Repository
 {
    public interface IOrderService :IGenericRepository<Order>
     {
+        List<Order> GetOrders();
+        List<OrderDetail> GetOrderDetail();
+        OrderDetail GetByIdOrderDetail(Guid id);
     }
 }

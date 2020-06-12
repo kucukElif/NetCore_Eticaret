@@ -1,0 +1,119 @@
+﻿@model List<CartItem>
+@{
+    ViewData["Title"] = "MyCart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    decimal? total = 0;
+    int index = 1;
+}
+    <section class="section-content padding-y">
+        <div class="container">
+
+            <div class="row">
+                <main class="col-md-9">
+                    <div class="card">
+
+                        <table class="table table-borderless table-shopping-cart">
+                            <thead class="text-muted">
+                                <tr class="small text-uppercase">
+                                    <th scope="col">Ürün</th>
+                                    <th scope="col" width="120">Adet</th>
+                                    <th scope="col" width="120">Fiyat</th>
+                                    <th scope="col" class="text-right" width="200"> </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var c in Model)
+                                {
+                                    total += c.SubTotal;
+                                    <tr>
+                                        <td>
+                                            <figure class="itemside">
+                                                <div class="aside"><img src="~/images/@c.ImagePath" class="img-sm"></div>
+                                                <figcaption class="info">
+                                                    <a href="#" class="title text-dark">@c.Name</a>
+                                                    <p class="text-muted small">Size: XL, Color: blue, <br> Brand: Gucci</p>
+                                                </figcaption>
+                                            </figure>
+                                        </td>
+                                        <td>
+                                           <input type="number" value="@c.Quantity" id="upCart" autocomplete="off" style="text-align:center; max-width:50px" MIN="1" MAX="30" class="form-control"/ >
+                                        </td>
+                                        <td>
+                                            <div class="price-wrap">
+                                                <var class="price">@c.SubTotal</var>
+
+                                            </div> <!-- price-wrap .// -->
+                                        </td>
+                                        <td class="text-right">
+                                            <a data-original-title="Save to Wishlist" title="" href="" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart"></i></a>
+                                            <a href="" class="btn btn-light"> Remove</a>
+                                        </td>
+                                    </tr>
+                                }
+
+                               
+                            </tbody>
+                        </table>
+
+                        <div class="card-body border-top">
+                            <a asp-action="CompleteCart" asp-controller="Home" class="btn btn-primary float-md-right"> Şipariş Tamamla <i class="fa fa-chevron-right"></i> </a>
+                            <a asp-action="Index" asp-controller="Home" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Alışverşe Devam Et </a>
+                        </div>
+                    </div> <!-- card.// -->
+
+                    <div class="alert alert-success mt-3">
+                        <p class="icontext"><i class="icon text-success fa fa-truck">En geç 2 haftaya kadar kargoya ürünleriniz teslim edilir.</i></p>
+                    </div>
+
+                </main> <!-- col.// -->
+                <aside class="col-md-3">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group">
+                                    <label>Kuponunuz Var Mı?</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="" placeholder="Kupon Kodu">
+                                        <span class="input-group-append">
+                                            <button class="btn btn-primary">Uygula</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div> <!-- card-body.// -->
+                    </div>  <!-- card .// -->
+                    <div class="card">
+                        <div class="card-body">
+                           
+                            <dl class="dlist-align">
+                                <dt>Toplam:</dt>
+                                <dd class="text-right  h5"><strong>@total</strong></dd>
+                            </dl>
+                            <hr>
+                            <p class="text-center mb-3">
+                                <img src="~/theme/images/misc/payments.png" height="26">
+                            </p>
+
+                        </div> <!-- card-body.// -->
+                    </div>  <!-- card .// -->
+                </aside> <!-- col.// -->
+            </div>
+
+        </div>
+    </section>
+@section scripts
+{ 
+    <script>
+        $(document).ready(function () {
+
+            $('#upCart').on('change keyup', function () {
+
+                var newquantity = $('#upCart').val();
+
+                alert(newquantity);
+            });
+        });
+    </script>
+}
+
+

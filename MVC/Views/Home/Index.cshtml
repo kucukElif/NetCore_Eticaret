@@ -92,7 +92,7 @@
                             </div>
                             <div class="mt-2">
                                 <var class="price">@p.UnitPrice.ToString("C2")</var> <!-- price-wrap.// -->
-                                <a href="#" class="btn btn-sm btn-outline-primary float-right">Sepete Ekle <i class="fa fa-shopping-cart"></i></a>
+                                <a asp-action="AddToCart" asp-controller="Home" asp-route-id="@p.ID" class="btn btn-sm btn-outline-primary float-right">Sepete Ekle <i class="fa fa-shopping-cart"></i></a>
                             </div>
                         </figcaption>
                     </div>

@@ -14,7 +14,7 @@ namespace MVC.Models.CartModel
         public Guid ID { get; set; }
         public string Name { get; set; }
         public short Quantity { get; set; }
-        public decimal? Price { get; set; }
+        public decimal Price { get; set; }
         public string ImagePath { get; set; }
         public decimal? SubTotal { get { return Price * Quantity; } }
     }
